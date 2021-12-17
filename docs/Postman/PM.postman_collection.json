@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "ed461762-a322-4714-a009-35522b6adef5",
+		"name": "PM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Product",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"host\", \"localhost:44320\");\r",
+							"// pm.collectionVariables.set(\"client_id\", 11111);\r",
+							"pm.collectionVariables.set(\"entry_date\", new Date().toISOString());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ddd Bread\",\r\n    \"productGroupId\": 17,\r\n    \"entryTime\": \"{{entry_date}}\",\r\n    \"price\": 2.3,\r\n    \"vatRate\": 12,\r\n    \"priceWithVat\": 2.58,\r\n    \"storeIds\": [1, 3, 40]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{host}}/api/product/add",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"strictSSL": false,
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{host}}/api/product/get",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": ""
+		},
+		{
+			"key": "entry_date",
+			"value": ""
+		}
+	]
+}
