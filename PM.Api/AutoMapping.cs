@@ -15,8 +15,6 @@ namespace PM.Api
         public AutoMapping()
         {
             CreateMap<AddProductCommand, Product>();
-            //CreateMap<AddProductCommand, Product>().ForMember(d => d.Stores, opt => opt.Ignore())
-                                                   // .ForMember(d => d.ProductGroup, opt => opt.Ignore());
 
             CreateMap<Product, ProductResponse>()
                 .ForMember(dest => dest.ProductGroupName, opt => opt.MapFrom(src => src.ProductGroup.Name))
@@ -24,6 +22,9 @@ namespace PM.Api
 
             CreateMap<Store, StoreResponse>()
                 .ForMember(des => des.StoreName, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<ProductGroup, ProductGroupResponse>()
+                .ForMember(des => des.GroupName, opt => opt.MapFrom(src => src.Name));
 
 
         }

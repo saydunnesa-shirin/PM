@@ -11,7 +11,6 @@ namespace PM.Service.Services
     {
         public Task<int> AddProduct(AddProductCommand dto);
         Task<List<ProductResponse>> GetProducts(SearchProductQuery query);
-
         public void CalculatePriceAndVat(ref Product product);
     }
 }

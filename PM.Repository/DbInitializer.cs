@@ -48,9 +48,9 @@ namespace PM.Repository
                 new ProductGroup { Name = "Tuna", Parent = foodSubGroupFish },
 
                 foodSubGroupMeat,
-                new ProductGroup { Name = "Chicken", Parent = foodSubGroupFish },
-                new ProductGroup { Name = "Beef", Parent = foodSubGroupFish },
-                new ProductGroup { Name = "Pork", Parent = foodSubGroupFish },
+                new ProductGroup { Name = "Chicken", Parent = foodSubGroupMeat },
+                new ProductGroup { Name = "Beef", Parent = foodSubGroupMeat },
+                new ProductGroup { Name = "Pork", Parent = foodSubGroupMeat },
 
                 foodSubGroupBread,
                 plainBreadFoodSubGroupBread,

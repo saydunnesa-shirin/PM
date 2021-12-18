@@ -72,7 +72,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": 5\r\n}",
+					"raw": "{\r\n    \"productId\": 1\r\n		\"productGroupId\": 17,\r\n		}",
 					"options": {
 						"raw": {
 							"language": "json"

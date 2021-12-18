@@ -1,9 +1,8 @@
 ﻿namespace PM.Common.Queries
 {
-    public class SearchProductQuery
+    public class SearchProductGroupQuery
     {
-        public int? ProductId { get; set; }
-
         public int? ProductGroupId { get; set; }
+        public string ProductGroupName { get; set; }
     }
 }

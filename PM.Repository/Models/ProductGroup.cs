@@ -8,6 +8,6 @@ namespace PM.Repository.Models
         public string Name { get; set; }
         public int? ParentProductGroupId { get; set; }
         public virtual ProductGroup Parent { get; set; }
-        public virtual HashSet<ProductGroup> Children { get; set; } //TODO: ICollection vs HashSet
+        public virtual List<ProductGroup> Children { get; set; } //TODO: ICollection vs HashSet
     }
 }

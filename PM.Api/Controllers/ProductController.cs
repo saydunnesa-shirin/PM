@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PM.Api.Validation;
 using PM.Common.Commands;
 using PM.Common.Queries;
 using PM.Common.Responses;
@@ -28,6 +30,9 @@ namespace PM.Api.Controllers
         {
             try
             {
+                AddProductCommandValidator validation = new AddProductCommandValidator();
+                validation.ValidateAndThrow(command);
+
                 await _productService.AddProduct(command);
             }
             catch (Exception ex)

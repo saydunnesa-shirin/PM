@@ -73,13 +73,23 @@ namespace PM.Service.Services
 
             if (query.ProductId == null)
             {
-                var products = await _productRepository.GetAll();
-                foreach (var product in products)
+                if(query.ProductGroupId == null)
                 {
-                    var productResponse = _mapper.Map<ProductResponse>(product);
-                    productResponses.Add(productResponse);
-
-                   // productResponses.Add(MapToResponse(product));
+                    var products = await _productRepository.GetAll();
+                    foreach (var product in products)
+                    {
+                        var productResponse = _mapper.Map<ProductResponse>(product);
+                        productResponses.Add(productResponse);
+                    }
+                }
+                else
+                {
+                    var productsByGroup = await _productRepository.GetByGroupId(query.ProductGroupId);
+                    foreach (var product in productsByGroup)
+                    {
+                        var productResponse = _mapper.Map<ProductResponse>(product);
+                        productResponses.Add(productResponse);
+                    }
                 }
             }
             else
