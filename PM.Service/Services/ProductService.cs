@@ -132,46 +132,5 @@ namespace PM.Service.Services
                 product.VatRate = 0; product.Price = product.PriceWithVat = 0.0m;
             }
         }
-
-        #region M Map
-        private static Product MapToEntity(AddProductCommand commmand)
-        {
-            //TODO: Automapper
-            //TODO: Price, PricewithVat, Vat calculation
-            return new Product
-            {
-                EntryTime = commmand.EntryTime,
-                Name = commmand.Name,
-                Price = commmand.Price,
-                VatRate = commmand.VatRate,
-                PriceWithVat = commmand.PriceWithVat,
-                ProductGroupId = commmand.ProductGroupId
-            };
-        }
-
-        private static ProductResponse MapToResponse(Product product)
-        {
-            List<StoreResponse> storeResponses = new List<StoreResponse>();
-            var stores = product.Stores.ToList();
-            foreach (var item in stores)
-            {
-                storeResponses.Add
-                    (
-                        new StoreResponse { StoreName = item.Name }
-                    );
-            }
-            return new ProductResponse
-            {
-                EntryTime = product.EntryTime,
-                Name = product.Name,
-                Price = product.Price,
-                PriceWithVat = product.PriceWithVat,
-                VatRate = product.VatRate,
-                ProductGroupName=product.ProductGroup.Name,
-                Stores= storeResponses
-            };
-        }
-
-        #endregion
     }
 }
