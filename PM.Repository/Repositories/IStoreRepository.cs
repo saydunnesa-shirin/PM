@@ -5,7 +5,7 @@ namespace PM.Repository.Repositories
 {
     public interface IStoreRepository
     {
-        Task<int> Add(Store model);
-        Task<Store> Get(int id);
+        Task<int> AddAsync(Store model);
+        Task<Store> GetAsync(int id);
     }
 }

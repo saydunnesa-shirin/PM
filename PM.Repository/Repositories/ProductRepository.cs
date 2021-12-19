@@ -19,23 +19,23 @@ namespace PM.Repository.Repositories
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<int> Add(Product model)
+        public async Task<int> AddAsync(Product model)
         {
             _dbContext.Products.Add(model);
             _logger.LogInformation("Adding product to database");
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Product> Get(int? id)
+        public async Task<Product> GetAsync(int? id)
         {
             return await _dbContext.Products
                 .Where(x => x.ProductId == id)
                 .Include(x => x.ProductGroup)
                 .Include(x => x.Stores)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
         }
 
-        public async Task<List<Product>> GetByGroupId(int? id)
+        public async Task<List<Product>> GetByGroupIdAsync(int? id)
         {
             return await _dbContext.Products
                 .Where(x => x.ProductGroupId == id)
@@ -44,7 +44,7 @@ namespace PM.Repository.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Product>> GetAll()
+        public async Task<List<Product>> GetAllAsync()
         {
             //TODO: Think about paging
             return await _dbContext.Products

@@ -22,18 +22,11 @@ namespace PM.Api.Controllers
             _productGroupService = productGroupService ?? throw new ArgumentNullException(nameof(productGroupService));
         }
 
-        [HttpGet("get")]
+        [HttpPost("get")]
         public async Task<List<ProductGroupResponse>> GetProductGroups(SearchProductGroupQuery query)
         {
-            try
-            {
-                return await _productGroupService.GetProductGroups(query);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error finding productGroup", ex.Message);
-                throw;
-            }
+            _logger.LogInformation("Product group search initiated.");
+            return await _productGroupService.GetProductGroupsAsync(query);
         }
     }
 }

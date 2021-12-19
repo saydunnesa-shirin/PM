@@ -26,34 +26,26 @@ namespace PM.Api.Controllers
         }
 
         [HttpPost("add")]
-        public async Task AddProduct(AddProductCommand command)
+        public async Task AddProductAsync(AddProductCommand command)
         {
-            try
-            {
-                AddProductCommandValidator validation = new AddProductCommandValidator();
-                validation.ValidateAndThrow(command);
+            AddProductCommandValidator validation = new AddProductCommandValidator();
+            validation.ValidateAndThrow(command);
 
-                await _productService.AddProduct(command);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error adding product", ex.Message);
-                // TODO: return custom exception message to user with error code
-            }
+            _logger.LogInformation("Product add initiated.");
+            var result = await _productService.AddProductAsync(command);
+
+            if (result > 0)
+                _logger.LogInformation("Product add completed.");
         }
 
-        [HttpGet("get")]
-        public async Task<List<ProductResponse>> GetProducts(SearchProductQuery query)
+        [HttpPost("get")]
+        public async Task<List<ProductResponse>> GetProductsAsync(SearchProductQuery query)
         {
-            try
-            {
-                return await _productService.GetProducts(query);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error finding product", ex.Message);
-                throw;
-            }
+            SearchProductQueryValidator validation = new SearchProductQueryValidator();
+            validation.ValidateAndThrow(query);
+
+            _logger.LogInformation("Product search initiated.");
+            return await _productService.GetProductsAsync(query);
         }
     }
 }

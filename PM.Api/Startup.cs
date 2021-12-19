@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PM.Common.Exceptions;
 using PM.Repository;
 using PM.Repository.Repositories;
 using PM.Service.Services;
@@ -55,6 +56,8 @@ namespace PM.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             //app.UseAuthorization();
 

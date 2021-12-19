@@ -12,7 +12,7 @@ namespace PM.Api.Validation
             RuleFor(x => x.EntryTime).NotNull().WithMessage("PLease enter product entry time."); ;
 
             RuleFor(x => x.Price).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.VatRate).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.VatRate).ExclusiveBetween(0,100).WithMessage("Please enter vat rate between '0' to '100'.");
             RuleFor(x => x.PriceWithVat).GreaterThanOrEqualTo(0);
 
             When(x => x.Price == 0, () => {

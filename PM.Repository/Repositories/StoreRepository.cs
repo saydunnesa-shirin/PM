@@ -17,16 +17,16 @@ namespace PM.Repository.Repositories
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<int> Add(Store model)
+        public async Task<int> AddAsync(Store model)
         {
             _dbContext.Stores.Add(model);
             _logger.LogInformation("Adding store to database");
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Store> Get(int id)
+        public async Task<Store> GetAsync(int id)
         {
-            return await _dbContext.Stores.SingleAsync(x => x.StoreId == id);
+            return await _dbContext.Stores.SingleOrDefaultAsync(x => x.StoreId == id);
         }
     }
 }

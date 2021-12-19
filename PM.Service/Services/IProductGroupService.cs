@@ -9,6 +9,6 @@ namespace PM.Service.Services
 {
     public interface IProductGroupService
     {
-        Task<List<ProductGroupResponse>> GetProductGroups(SearchProductGroupQuery query);
+        Task<List<ProductGroupResponse>> GetProductGroupsAsync(SearchProductGroupQuery query);
     }
 }

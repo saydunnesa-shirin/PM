@@ -30,11 +30,11 @@ namespace PM.Service.Services
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<List<ProductGroupResponse>> GetProductGroups(SearchProductGroupQuery query)
+        public async Task<List<ProductGroupResponse>> GetProductGroupsAsync(SearchProductGroupQuery query)
         {
             var productGroupResponses = new List<ProductGroupResponse>();
 
-            var productGroups = await _productGroupRepository.GetAll();
+            var productGroups = await _productGroupRepository.GetAllAsync();
 
             if (query.ProductGroupId != null)
             {

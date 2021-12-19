@@ -28,7 +28,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Chair-ABC\",\r\n    \"productGroupId\": 4,\r\n    \"entryTime\": \"{{entry_date}}\",\r\n    \"Price\" : 250,\r\n    \"vatRate\": 12,\r\n    \"priceWithVat\": 280,\r\n    \"storeIds\": [1, 3, 4]\r\n}",
+					"raw": "{\r\n    \"name\": \"Swing Chair ABC\",\r\n    \"productGroupId\": 4,\r\n    \"entryTime\": \"{{entry_date}}\",\r\n    \"Price\" : 250,\r\n    \"vatRate\": 12,\r\n    \"priceWithVat\": 280,\r\n    \"storeIds\": [1, 3, 5]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -72,7 +72,51 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\": null,\r\n    \"productGroupId\": 4\r\n}",
+					"raw": "{\r\n    \"productId\": 1002\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{host}}/api/product/get",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"product",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product By Group",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"host\", \"localhost:44320\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"strictSSL": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productGroupId\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -116,7 +160,51 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productGroupId\": null,\r\n    \"productGroupName\":\"Clothes\"\r\n}",
+					"raw": "{\r\n    \"productGroupId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{host}}/api/productgroup/get",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"productgroup",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product Group By Name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"host\", \"localhost:44320\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"strictSSL": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productGroupName\":\"Clothes\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

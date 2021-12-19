@@ -6,9 +6,9 @@ namespace PM.Repository.Repositories
 {
     public interface IProductRepository
     {
-        Task<int> Add(Product model);
-        Task<Product> Get(int? id);
-        Task<List<Product>> GetByGroupId(int? id);
-        Task<List<Product>> GetAll();
+        Task<int> AddAsync(Product model);
+        Task<Product> GetAsync(int? id);
+        Task<List<Product>> GetByGroupIdAsync(int? id);
+        Task<List<Product>> GetAllAsync();
     }
 }

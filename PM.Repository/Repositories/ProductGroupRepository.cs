@@ -26,10 +26,10 @@ namespace PM.Repository.Repositories
         //        .Include(x => x.Parent)
         //        .Include(x => x.Children)
         //        .Where(x => x.ProductGroupId == id)
-        //        .SingleAsync();
+        //        .SingleOrDefaultAsync();
         //}
 
-        public async Task<List<ProductGroup>> GetById(int? id)
+        public async Task<List<ProductGroup>> GetByIdAsync(int? id)
         {
             //TODO: Think about paging
             return await _dbContext.ProductGroups
@@ -39,7 +39,7 @@ namespace PM.Repository.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<ProductGroup>> GetAll()
+        public async Task<List<ProductGroup>> GetAllAsync()
         {
             //TODO: Think about paging
             return await _dbContext.ProductGroups
