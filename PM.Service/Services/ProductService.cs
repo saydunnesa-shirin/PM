@@ -151,7 +151,11 @@ namespace PM.Service.Services
                 product.VatRate = 0; product.Price = product.PriceWithVat = 0.0m;
             }
         }
-
+        /// <summary>
+        /// Check Product group exist or not
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         private async Task ValidateProductGroup(AddProductCommand command)
         {
             var dbProductGroup = await _productGroupRepository.GetByIdAsync(command.ProductGroupId);

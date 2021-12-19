@@ -4,6 +4,8 @@ using Moq;
 using NUnit.Framework;
 using PM.Common.Commands;
 using PM.Common.Exceptions;
+using PM.Common.Queries;
+using PM.Common.Responses;
 using PM.Repository.Models;
 using PM.Repository.Repositories;
 using PM.Service.Services;
@@ -43,6 +45,7 @@ namespace PM.Service.Test
             _mockProductRepository.Reset();
         }
 
+        #region Add Product Calculate Price
         [Test]
         public void CalculatePrice_GetPriceWithVat_ForPriceAndVatRate()
         {
@@ -141,6 +144,9 @@ namespace PM.Service.Test
             Assert.AreEqual(result, product.PriceWithVat);
         }
 
+        #endregion
+
+        #region Add Product
         [Test]
         public async Task AddProductAsync()
         {
@@ -148,6 +154,7 @@ namespace PM.Service.Test
             AddProductCommand command = SetUpAddProductCommand();
             SetUpMapper(command);
             _mockStoreRepository.Setup(x => x.GetAsync(It.IsAny<int>())).Returns(Task.FromResult(new Store()));
+
             _mockProductGroupRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new List<ProductGroup> { new ProductGroup() }));
 
@@ -160,7 +167,7 @@ namespace PM.Service.Test
             _mockProductRepository.Verify(x => x.AddAsync(It.IsAny<Product>()), Times.Once);
             _mockProductRepository.VerifyNoOtherCalls();
         }
-
+        
         [Test]
         public void AddProduct_Fails_WhenProductGroupDoesNotExistAsync()
         {
@@ -200,6 +207,7 @@ namespace PM.Service.Test
             command.PriceWithVat = 0;
             SetUpMapper(command);
             _mockStoreRepository.Setup(x => x.GetAsync(It.IsAny<int>())).Returns(Task.FromResult(new Store()));
+
             _mockProductGroupRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .Returns(Task.FromResult(new List<ProductGroup> { new ProductGroup() }));
 
@@ -207,6 +215,105 @@ namespace PM.Service.Test
             var ex = Assert.ThrowsAsync<AppException>(async () => await _productService.AddProductAsync(command));
             Assert.That(ex.Message == "Invalid product Price");
         }
+        #endregion
+
+        #region Get Product
+        [Test]
+        public async Task GetProductsAsync_ReturnSingleProduct_WhenProductIdFound()
+        {
+            //Arrange
+            SearchProductQuery query = SetUpSearchProductQuery();
+            Product testProduct = SetUpTestProducts()[0];
+            SetUpProductResponsesMapper(testProduct);
+            _mockProductRepository.Setup(x => x.GetAsync(It.IsAny<int>())).Returns(Task.FromResult(testProduct));
+
+            ////Act
+            var product = await _productService.GetProductsAsync(query);
+
+            ////Assert
+            _mockProductRepository.Verify(x => x.GetAsync(It.IsAny<int>()), Times.Once);
+            _mockProductRepository.VerifyNoOtherCalls();
+        }
+
+        [Test]
+        public void GetProducts_Fails_WhenProductDoesNotExist()
+        {
+            //Arrange
+            SearchProductQuery query = SetUpSearchProductQuery();
+            Product testProduct = SetUpTestProducts()[0];
+            SetUpProductResponsesMapper(testProduct);
+
+            //Act and Assert
+            var ex = Assert.ThrowsAsync<KeyNotFoundException>(async () => await _productService.GetProductsAsync(query));
+            Assert.That(ex.Message == $"Product not found for id: {query.ProductId}");
+        }
+
+        [Test]
+        public async Task GetProductsAsync_All_WhenProductIdOrProductGroupIdNotProvided()
+        {
+            //Arrange
+            SearchProductQuery query = SetUpSearchProductQuery();
+            query.ProductId = null;
+            query.ProductGroupId = null;
+            List<Product> testProductList = SetUpTestProducts();
+
+            foreach (var item in testProductList)
+            {
+                SetUpProductResponsesMapper(item);
+            }
+            
+            _mockProductRepository.Setup(x => x.GetAllAsync()).Returns(Task.FromResult(testProductList));
+
+            ////Act
+            var product = await _productService.GetProductsAsync(query);
+
+            ////Assert
+            _mockProductRepository.Verify(x => x.GetAllAsync(), Times.Once);
+            _mockProductRepository.VerifyNoOtherCalls();
+        }
+
+        [Test]
+        public async Task GetProductsAsync_ReturnMultipleProduct_WhenProductGroupIdFound()
+        {
+            //Arrange
+            SearchProductQuery query = SetUpSearchProductQuery();
+            query.ProductId = null;
+            List<Product> testProductList = SetUpTestProducts();
+
+            foreach (var item in testProductList)
+            {
+                SetUpProductResponsesMapper(item);
+            }
+
+            _mockProductRepository.Setup(x => x.GetByGroupIdAsync(It.IsAny<int>())).Returns(Task.FromResult(testProductList));
+
+            ////Act
+            var product = await _productService.GetProductsAsync(query);
+
+            ////Assert
+            _mockProductRepository.Verify(x => x.GetByGroupIdAsync(It.IsAny<int>()), Times.Once);
+            _mockProductRepository.VerifyNoOtherCalls();
+        }
+
+        [Test]
+        public void GetProducts_Fails_WhenProductGroupIdDoesNotExist()
+        {
+            //Arrange
+            SearchProductQuery query = SetUpSearchProductQuery();
+            query.ProductId = null;
+            query.ProductGroupId = 500000;
+
+            _mockProductRepository.Setup(x => x.GetByGroupIdAsync(It.IsAny<int>()))
+                .Returns(Task.FromResult(new List<Product>()));
+
+            //Act and Assert
+            var ex = Assert.ThrowsAsync<KeyNotFoundException>(async () => await _productService.GetProductsAsync(query));
+            Assert.That(ex.Message == $"No product found for product group id: {query.ProductGroupId}");
+        }
+
+        #endregion
+
+        #region Private Methods
 
         private void SetUpMapper(AddProductCommand command)
         {
@@ -238,5 +345,76 @@ namespace PM.Service.Test
                 StoreIds = new List<int> { 1, 2, 3 }
             };
         }
+
+        /// Get
+        private SearchProductQuery SetUpSearchProductQuery()
+        {
+            return new SearchProductQuery()
+            {
+                ProductId = 1,
+                ProductGroupId = 4,
+            };
+        }
+
+        private List<Product> SetUpTestProducts()
+        {
+            return new List<Product>()
+            {
+                new Product()
+                {
+                    Name = "Product1",
+                    EntryTime = DateTime.UtcNow,
+                    ProductGroupId = 4,
+                    Price = 10,
+                    VatRate = 20,
+                    PriceWithVat = 12,
+                    Stores = new List<Store> { new Store() }
+                },
+                new Product()
+                {
+                    Name = "Product2",
+                    EntryTime = DateTime.UtcNow,
+                    ProductGroupId = 1,
+                    Price = 100,
+                    VatRate = 20,
+                    PriceWithVat = 120,
+                    Stores = new List<Store> { new Store() }
+                },
+                new Product()
+                {
+                    Name = "Product3",
+                    EntryTime = DateTime.UtcNow,
+                    ProductGroupId = 3,
+                    Price = 200,
+                    VatRate = 20,
+                    PriceWithVat = 240,
+                    Stores = new List<Store> { new Store() }
+                }
+
+
+            };
+        }
+
+        private void SetUpProductResponsesMapper(Product product)
+        {
+            _mapper.Setup(x => x.Map<ProductResponse>(product)).Returns
+                (
+                    new ProductResponse
+                    {
+                        Name = product.Name,
+                        EntryTime = product.EntryTime,
+                        Price = product.Price,
+                        VatRate = product.VatRate,
+                        PriceWithVat = product.PriceWithVat,
+                        ProductGroupName = "TestProductGroup",
+                        Stores = new List<StoreResponse> 
+                        { 
+                            new StoreResponse { StoreName = "TestStore" } 
+                        }
+                    }
+                );
+        }
+
+        #endregion
     }
 }

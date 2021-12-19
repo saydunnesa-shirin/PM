@@ -54,6 +54,15 @@ namespace PM.Service.Services
                 }
             }
 
+            if (productGroups == null || productGroups.Count == 0)
+            {
+                string message = query.ProductGroupId > 0 ? $"No product group found for product group id: {query.ProductGroupId}" :
+                                                        $"No product group found for product group name: {query.ProductGroupName}";
+
+                _logger.LogWarning(message);
+                throw new KeyNotFoundException(message);
+            }
+
             return productGroupResponses;
         }
     }
