@@ -3,6 +3,5 @@
     public class SearchProductGroupQuery
     {
         public int? ProductGroupId { get; set; }
-        public string ProductGroupName { get; set; }
     }
 }

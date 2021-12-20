@@ -19,19 +19,8 @@ namespace PM.Repository.Repositories
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        //public async Task<ProductGroup> GetById(int? id)
-        //{
-        //    return await _dbContext.ProductGroups
-
-        //        .Include(x => x.Parent)
-        //        .Include(x => x.Children)
-        //        .Where(x => x.ProductGroupId == id)
-        //        .SingleOrDefaultAsync();
-        //}
-
         public async Task<List<ProductGroup>> GetByIdAsync(int? id)
         {
-            //TODO: Think about paging
             return await _dbContext.ProductGroups
                 .Where(x => x.ProductGroupId == id)
                 .Include(x => x.Parent)
@@ -41,7 +30,6 @@ namespace PM.Repository.Repositories
 
         public async Task<List<ProductGroup>> GetAllAsync()
         {
-            //TODO: Think about paging
             return await _dbContext.ProductGroups
                 .Include(x => x.Parent)
                 .Include(x => x.Children)

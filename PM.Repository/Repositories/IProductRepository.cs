@@ -8,7 +8,6 @@ namespace PM.Repository.Repositories
     {
         Task<int> AddAsync(Product model);
         Task<Product> GetAsync(int? id);
-        Task<List<Product>> GetByGroupIdAsync(int? id);
         Task<List<Product>> GetAllAsync();
     }
 }

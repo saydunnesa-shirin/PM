@@ -12,12 +12,11 @@ namespace PM.Api.Validation
             RuleFor(x => x.EntryTime).NotNull().WithMessage("PLease enter product entry time."); ;
 
             RuleFor(x => x.Price).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.VatRate).ExclusiveBetween(0,100).WithMessage("Please enter vat rate between '0' to '100'.");
             RuleFor(x => x.PriceWithVat).GreaterThanOrEqualTo(0);
 
             When(x => x.Price == 0, () => {
                 RuleFor(x => x.PriceWithVat).GreaterThan(0);
-                RuleFor(x => x.VatRate).GreaterThan(0);
+                RuleFor(x => x.VatRate).ExclusiveBetween(0, 100).WithMessage("Please enter vat rate between '0' to '100'."); ;
             });
 
             When(x => x.VatRate == 0, () => {
@@ -27,10 +26,10 @@ namespace PM.Api.Validation
 
             When(x => x.PriceWithVat == 0, () => {
                 RuleFor(x => x.Price).GreaterThan(0);
-                RuleFor(x => x.VatRate).GreaterThan(0);
+                RuleFor(x => x.VatRate).ExclusiveBetween(0, 100).WithMessage("Please enter vat rate between '0' to '100'."); ;
             });
 
-            RuleFor(x => x.StoreIds.Count).GreaterThan(0).WithMessage("PLease enter store(s)."); ;
+            RuleFor(x => x.StoreIds.Count).LessThanOrEqualTo(0).WithMessage("PLease enter store(s)."); ;
 
         }
     }

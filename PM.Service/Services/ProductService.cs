@@ -38,30 +38,39 @@ namespace PM.Service.Services
         {
             await ValidateProductGroup(command);
 
-            var dbModel = _mapper.Map<Product>(command);
-            dbModel.Stores = new List<Store>();
-
-            foreach (var storeId in command.StoreIds)
+            if(command.StoreIds != null && command.StoreIds.Count > 0)
             {
-                var existingStore = await _storeRepository.GetAsync(storeId);
-                if (existingStore == null)
+                var dbModel = _mapper.Map<Product>(command);
+                dbModel.Stores = new List<Store>();
+
+                foreach (var storeId in command.StoreIds)
                 {
-                    string message = $"Provided store id does not exist: {storeId}";
-                    _logger.LogWarning(message);
-                    throw new KeyNotFoundException(message);
+                    var existingStore = await _storeRepository.GetAsync(storeId);
+                    if (existingStore == null)
+                    {
+                        string message = $"Provided store id does not exist: {storeId}";
+                        _logger.LogWarning(message);
+                        throw new KeyNotFoundException(message);
+                    }
+                    dbModel.Stores.Add(existingStore);
                 }
-                dbModel.Stores.Add(existingStore);
-            }
 
-            CalculatePriceAndVat(ref dbModel);
+                CalculatePriceAndVat(ref dbModel);
 
-            if (dbModel.Price > 0 && dbModel.PriceWithVat > 0)
-            {
-                return await _productRepository.AddAsync(dbModel);
+                if (dbModel.Price > 0 && dbModel.PriceWithVat > 0)
+                {
+                    return await _productRepository.AddAsync(dbModel);
+                }
+                else
+                {
+                    string message = "Invalid product Price";
+                    _logger.LogWarning(message);
+                    throw new AppException(message);
+                }
             }
             else
             {
-                string message = "Invalid product Price";
+                string message = "Please enter product Stores";
                 _logger.LogWarning(message);
                 throw new AppException(message);
             }
@@ -76,32 +85,13 @@ namespace PM.Service.Services
         {
             var productResponses = new List<ProductResponse>();
 
-            if (query.ProductId == null)
+            if (query.ProductId == null || query.ProductId == 0)
             {
-                if (query.ProductGroupId == null)
+                var products = await _productRepository.GetAllAsync();
+                foreach (var product in products)
                 {
-                    var products = await _productRepository.GetAllAsync();
-                    foreach (var product in products)
-                    {
-                        var productResponse = _mapper.Map<ProductResponse>(product);
-                        productResponses.Add(productResponse);
-                    }
-                }
-                else
-                {
-                    var productsByGroup = await _productRepository.GetByGroupIdAsync(query.ProductGroupId);
-
-                    if (productsByGroup == null || productsByGroup.Count == 0)
-                    {
-                        string message = $"No product found for product group id: {query.ProductGroupId}";
-                        _logger.LogWarning(message);
-                        throw new KeyNotFoundException(message);
-                    }
-                    foreach (var product in productsByGroup)
-                    {
-                        var productResponse = _mapper.Map<ProductResponse>(product);
-                        productResponses.Add(productResponse);
-                    }
+                    var productResponse = _mapper.Map<ProductResponse>(product);
+                    productResponses.Add(productResponse);
                 }
             }
             else
@@ -151,6 +141,7 @@ namespace PM.Service.Services
                 product.VatRate = 0; product.Price = product.PriceWithVat = 0.0m;
             }
         }
+        
         /// <summary>
         /// Check Product group exist or not
         /// </summary>

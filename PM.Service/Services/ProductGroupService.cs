@@ -24,7 +24,7 @@ namespace PM.Service.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        
+
         /// <summary>
         /// Get Product Group
         /// </summary>
@@ -35,17 +35,14 @@ namespace PM.Service.Services
             var productGroupResponses = new List<ProductGroupResponse>();
 
             var productGroups = await _productGroupRepository.GetAllAsync();
+            productGroups = productGroups.Where(x => x.Parent is null).ToList();
 
-            if (query.ProductGroupId != null)
+            if (query.ProductGroupId != null || query.ProductGroupId > 0)
             {
                 productGroups = productGroups.Where(q => q.ProductGroupId == query.ProductGroupId).ToList();
             }
-            else if (query.ProductGroupName != null)
-            {
-                productGroups = productGroups.Where(q => q.Name == query.ProductGroupName).ToList();
-            }
 
-            if(productGroups.Count > 0)
+            if (productGroups.Count > 0)
             {
                 foreach (var productGroup in productGroups)
                 {
@@ -56,8 +53,7 @@ namespace PM.Service.Services
 
             if (productGroups == null || productGroups.Count == 0)
             {
-                string message = query.ProductGroupId > 0 ? $"No product group found for product group id: {query.ProductGroupId}" :
-                                                        $"No product group found for product group name: {query.ProductGroupName}";
+                string message = $"No product group found for product group id: {query.ProductGroupId}";
 
                 _logger.LogWarning(message);
                 throw new KeyNotFoundException(message);

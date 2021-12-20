@@ -35,18 +35,8 @@ namespace PM.Repository.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<List<Product>> GetByGroupIdAsync(int? id)
-        {
-            return await _dbContext.Products
-                .Where(x => x.ProductGroupId == id)
-                .Include(x => x.ProductGroup)
-                .Include(x => x.Stores)
-                .ToListAsync();
-        }
-
         public async Task<List<Product>> GetAllAsync()
         {
-            //TODO: Think about paging
             return await _dbContext.Products
                 .Include(x => x.ProductGroup)
                 .Include(x => x.Stores)

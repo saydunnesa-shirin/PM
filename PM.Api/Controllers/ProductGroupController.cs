@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PM.Api.Validation;
 using PM.Common.Queries;
 using PM.Common.Responses;
 using PM.Service.Services;
@@ -25,6 +27,9 @@ namespace PM.Api.Controllers
         [HttpPost("get")]
         public async Task<List<ProductGroupResponse>> GetProductGroups(SearchProductGroupQuery query)
         {
+            SearchProductGroupQueryValidator validation = new SearchProductGroupQueryValidator();
+            validation.ValidateAndThrow(query);
+
             _logger.LogInformation("Product group search initiated.");
             return await _productGroupService.GetProductGroupsAsync(query);
         }

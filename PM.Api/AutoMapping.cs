@@ -2,11 +2,6 @@
 using PM.Common.Commands;
 using PM.Common.Responses;
 using PM.Repository.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PM.Api
 {

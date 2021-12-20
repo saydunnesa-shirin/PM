@@ -215,6 +215,25 @@ namespace PM.Service.Test
             var ex = Assert.ThrowsAsync<AppException>(async () => await _productService.AddProductAsync(command));
             Assert.That(ex.Message == "Invalid product Price");
         }
+
+        [Test]
+        public void AddProduct_Fails_WhenNoStoreProvide()
+        {
+            //Arrange
+            AddProductCommand command = SetUpAddProductCommand();
+            command.Price = 0;
+            command.PriceWithVat = 0;
+            command.StoreIds = new List<int>();
+            SetUpMapper(command);
+            _mockStoreRepository.Setup(x => x.GetAsync(It.IsAny<int>())).Returns(Task.FromResult(new Store()));
+
+            _mockProductGroupRepository.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
+                .Returns(Task.FromResult(new List<ProductGroup> { new ProductGroup() }));
+
+            //Assert
+            var ex = Assert.ThrowsAsync<AppException>(async () => await _productService.AddProductAsync(command));
+            Assert.That(ex.Message == "Please enter product Stores");
+        }
         #endregion
 
         #region Get Product
@@ -254,7 +273,6 @@ namespace PM.Service.Test
             //Arrange
             SearchProductQuery query = SetUpSearchProductQuery();
             query.ProductId = null;
-            query.ProductGroupId = null;
             List<Product> testProductList = SetUpTestProducts();
 
             foreach (var item in testProductList)
@@ -272,44 +290,6 @@ namespace PM.Service.Test
             _mockProductRepository.VerifyNoOtherCalls();
         }
 
-        [Test]
-        public async Task GetProductsAsync_ReturnMultipleProduct_WhenProductGroupIdFound()
-        {
-            //Arrange
-            SearchProductQuery query = SetUpSearchProductQuery();
-            query.ProductId = null;
-            List<Product> testProductList = SetUpTestProducts();
-
-            foreach (var item in testProductList)
-            {
-                SetUpProductResponsesMapper(item);
-            }
-
-            _mockProductRepository.Setup(x => x.GetByGroupIdAsync(It.IsAny<int>())).Returns(Task.FromResult(testProductList));
-
-            ////Act
-            var product = await _productService.GetProductsAsync(query);
-
-            ////Assert
-            _mockProductRepository.Verify(x => x.GetByGroupIdAsync(It.IsAny<int>()), Times.Once);
-            _mockProductRepository.VerifyNoOtherCalls();
-        }
-
-        [Test]
-        public void GetProducts_Fails_WhenProductGroupIdDoesNotExist()
-        {
-            //Arrange
-            SearchProductQuery query = SetUpSearchProductQuery();
-            query.ProductId = null;
-            query.ProductGroupId = 500000;
-
-            _mockProductRepository.Setup(x => x.GetByGroupIdAsync(It.IsAny<int>()))
-                .Returns(Task.FromResult(new List<Product>()));
-
-            //Act and Assert
-            var ex = Assert.ThrowsAsync<KeyNotFoundException>(async () => await _productService.GetProductsAsync(query));
-            Assert.That(ex.Message == $"No product found for product group id: {query.ProductGroupId}");
-        }
 
         #endregion
 
@@ -351,8 +331,7 @@ namespace PM.Service.Test
         {
             return new SearchProductQuery()
             {
-                ProductId = 1,
-                ProductGroupId = 4,
+                ProductId = 1
             };
         }
 

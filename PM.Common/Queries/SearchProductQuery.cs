@@ -4,6 +4,6 @@
     {
         public int? ProductId { get; set; }
 
-        public int? ProductGroupId { get; set; }
+        //public int? ProductGroupId { get; set; }
     }
 }

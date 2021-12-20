@@ -97,6 +97,118 @@ namespace PM.Repository
             context.SaveChanges();
             Array.Clear(productGroups, 0, productGroups.Length);
 
+            //Electronics And Computers
+            var ecSubGroupLaptop = new ProductGroup { Name = "Laptop", Parent = rootProductGroupFood.First(x => x.Name.Equals("Electronics And Computers")) };
+            var ecSubGroupTablet = new ProductGroup { Name = "Tablet", Parent = rootProductGroupFood.First(x => x.Name.Equals("Electronics And Computers")) };
+            var ecSubGroupPhone = new ProductGroup { Name = "Phone", Parent = rootProductGroupFood.First(x => x.Name.Equals("Electronics And Computers")) };
+            productGroups = new ProductGroup[]
+            {
+                ecSubGroupLaptop,
+                new ProductGroup { Name = "HP", Parent = ecSubGroupLaptop },
+                new ProductGroup { Name = "Dell", Parent = ecSubGroupLaptop },
+                new ProductGroup { Name = "Acer", Parent = ecSubGroupLaptop },
+
+                ecSubGroupTablet,
+                new ProductGroup { Name = "Microsoft Surface", Parent = ecSubGroupTablet },
+                new ProductGroup { Name = "Apple", Parent = ecSubGroupTablet },
+                new ProductGroup { Name = "Lenovo", Parent = ecSubGroupTablet },
+
+                ecSubGroupPhone,
+                new ProductGroup { Name = "Samsung", Parent = ecSubGroupPhone },
+                new ProductGroup { Name = "iPhone", Parent = ecSubGroupPhone },
+                new ProductGroup { Name = "Huawei", Parent = ecSubGroupPhone }
+            };
+            foreach (ProductGroup pg in productGroups)
+            {
+                context.ProductGroups.Add(pg);
+            }
+            context.SaveChanges();
+            Array.Clear(productGroups, 0, productGroups.Length);
+
+            //Furniture
+            var furnitureSubGroupSofa = new ProductGroup { Name = "Sofa", Parent = rootProductGroupFood.First(x => x.Name.Equals("Furniture")) };
+            var furnitureSubGroupTable = new ProductGroup { Name = "Table", Parent = rootProductGroupFood.First(x => x.Name.Equals("Furniture")) };
+            var furnitureSubGroupCupboard = new ProductGroup { Name = "Cupboard", Parent = rootProductGroupFood.First(x => x.Name.Equals("Furniture")) };
+            productGroups = new ProductGroup[]
+            {
+                furnitureSubGroupSofa,
+                new ProductGroup { Name = "HP", Parent = furnitureSubGroupSofa },
+                new ProductGroup { Name = "Dell", Parent = furnitureSubGroupSofa },
+                new ProductGroup { Name = "Acer", Parent = furnitureSubGroupSofa },
+
+                furnitureSubGroupTable,
+                new ProductGroup { Name = "Folding Table", Parent = furnitureSubGroupTable },
+                new ProductGroup { Name = "Coffee Table", Parent = furnitureSubGroupTable },
+                new ProductGroup { Name = "Round Table", Parent = furnitureSubGroupTable },
+
+                furnitureSubGroupCupboard,
+                new ProductGroup { Name = "Linen Cupboard", Parent = furnitureSubGroupCupboard },
+                new ProductGroup { Name = "Stationary Cupboard", Parent = furnitureSubGroupCupboard },
+                new ProductGroup { Name = "Airing Cupboard", Parent = furnitureSubGroupCupboard }
+            };
+            foreach (ProductGroup pg in productGroups)
+            {
+                context.ProductGroups.Add(pg);
+            }
+            context.SaveChanges();
+            Array.Clear(productGroups, 0, productGroups.Length);
+
+            //Stationary
+            var stationarySubGroupPaper = new ProductGroup { Name = "Paper", Parent = rootProductGroupFood.First(x => x.Name.Equals("Stationary")) };
+            var stationarySubGroupFile = new ProductGroup { Name = "File and Folder", Parent = rootProductGroupFood.First(x => x.Name.Equals("Stationary")) };
+            var stationarySubGroupPresentation = new ProductGroup { Name = "Presentation Supplies", Parent = rootProductGroupFood.First(x => x.Name.Equals("Stationary")) };
+            productGroups = new ProductGroup[]
+            {
+                stationarySubGroupPaper,
+                new ProductGroup { Name = "A4", Parent = stationarySubGroupPaper },
+                new ProductGroup { Name = "A5", Parent = stationarySubGroupPaper },
+                new ProductGroup { Name = "B3", Parent = stationarySubGroupPaper },
+
+                stationarySubGroupFile,
+                new ProductGroup { Name = "File Box", Parent = stationarySubGroupFile },
+                new ProductGroup { Name = "Ring Binder", Parent = stationarySubGroupFile },
+                new ProductGroup { Name = "Clip Files", Parent = stationarySubGroupFile },
+
+                stationarySubGroupPresentation,
+                new ProductGroup { Name = "Whiteboards", Parent = stationarySubGroupPresentation },
+                new ProductGroup { Name = "Markers", Parent = stationarySubGroupPresentation },
+                new ProductGroup { Name = "Erasers", Parent = stationarySubGroupPresentation }
+            };
+            foreach (ProductGroup pg in productGroups)
+            {
+                context.ProductGroups.Add(pg);
+            }
+            context.SaveChanges();
+            Array.Clear(productGroups, 0, productGroups.Length);
+
+            //Stationary
+            var toiletriesSubGroupSoap = new ProductGroup { Name = "Soap", Parent = rootProductGroupFood.First(x => x.Name.Equals("Toiletries")) };
+            var toiletriesSubGroupShampoo = new ProductGroup { Name = "Shampoo", Parent = rootProductGroupFood.First(x => x.Name.Equals("Toiletries")) };
+            var toiletriesSubGroupToothPaste = new ProductGroup { Name = "ToothPaste", Parent = rootProductGroupFood.First(x => x.Name.Equals("Toiletries")) };
+            productGroups = new ProductGroup[]
+            {
+                toiletriesSubGroupSoap,
+                new ProductGroup { Name = "Aveeno", Parent = toiletriesSubGroupSoap },
+                new ProductGroup { Name = "Olay", Parent = toiletriesSubGroupSoap },
+                new ProductGroup { Name = "Palmolive", Parent = toiletriesSubGroupSoap },
+
+                toiletriesSubGroupShampoo,
+                new ProductGroup { Name = "TRESemme", Parent = toiletriesSubGroupShampoo },
+                new ProductGroup { Name = "Pantene", Parent = toiletriesSubGroupShampoo },
+                new ProductGroup { Name = "Sunsilk", Parent = toiletriesSubGroupShampoo },
+
+                toiletriesSubGroupToothPaste,
+                new ProductGroup { Name = "Colgate", Parent = toiletriesSubGroupToothPaste },
+                new ProductGroup { Name = "Sensodyne", Parent = toiletriesSubGroupToothPaste },
+                new ProductGroup { Name = "Crest", Parent = toiletriesSubGroupToothPaste }
+            };
+            foreach (ProductGroup pg in productGroups)
+            {
+                context.ProductGroups.Add(pg);
+            }
+            context.SaveChanges();
+            Array.Clear(productGroups, 0, productGroups.Length);
+
             #endregion
 
 
@@ -137,25 +249,6 @@ namespace PM.Repository
                         stores.First(x=>x.Name.Equals("Pirita"))
                     }
                 }
-                //new Product
-                //{
-                //    Name = "Fish 003", EntryTime = DateTime.UtcNow, Price = 10m, PriceWithVat = 11.5m, VatRate = 15, ProductGroupId = 11,
-                //    Stores = new List<Store>
-                //    {
-                //        stores.First(x=>x.Name.Equals("Haabersti")),
-                //        stores.First(x=>x.Name.Equals("Pirita"))
-                //    }
-                //},
-                //new Product
-                //{
-                //    Name = "Sofa 101", EntryTime = DateTime.UtcNow, Price = 100m, PriceWithVat = 120m, VatRate = 20, ProductGroupId = 15,
-                //    Stores = new List<Store>
-                //    {
-                //        stores.First(x=>x.Name.Equals("Kesklinn")),
-                //        stores.First(x=>x.Name.Equals("Lasnamäe")),
-                //        stores.First(x=>x.Name.Equals("Nomme"))
-                //    }
-                //}
             };
             foreach (Product p in products)
             {

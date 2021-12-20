@@ -10,11 +10,6 @@ namespace PM.Api.Validation
             When(x => x.ProductId != null, () => {
                 RuleFor(x => x.ProductId).GreaterThan(0).WithMessage("PLease enter valid product id.");
             });
-
-            When(x => x.ProductGroupId != null, () => {
-                RuleFor(x => x.ProductGroupId).GreaterThan(0).WithMessage("PLease enter valid product id.");
-            });
-
         }
     }
 }
