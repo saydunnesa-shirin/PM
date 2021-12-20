@@ -28,5 +28,6 @@ There are three API endpoints:
 ![API Image](images/SwaggerAPI.PNG)
 
 ## Postman
-A postman collection is included to call the APIs
-A json script is added in (PM/docs/Postman) folder
+A postman collection is included to call the APIs.
+
+A json script is added in this [a link] (https://github.com/saydunnesa-shirin/PM/blob/main/docs/Postman/PM.postman_collection.json) link.
